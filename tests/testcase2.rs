@@ -31,9 +31,27 @@ fn fileTest(){
                _ => println!("{}","a"),
                 
             }
-    },
-    
-        
+    },  
     };
-
 }
+#[test]
+fn appstoreTest(){
+    println!("{}", match tool::find_store("windows") {
+        Some(s) => s,
+        None => "Not a valid mobile OS"
+    });
+
+    println!("{}", match tool::find_store("IOS") {
+        Some(s) => s,
+        None => "Not a valid mobile OS"
+    });
+    println!("{}", match tool::find_store("android") {
+        Some(s) => s,
+        None => "Not a valid mobile OS"
+    });
+    assert_eq!(tool::find_store("IOS"),Some("app store"));
+
+    assert_eq!(tool::find_store("windows"),Some("app store"));
+}
+
+
