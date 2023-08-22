@@ -24,3 +24,17 @@ fn testcase3(){
     println!("{}",rust_new::com::wowo(2,3));
 
 }
+
+#[test]
+fn testcaseVec(){
+    println!("testcaseVec");
+    let vecc = vec![1,2,4,6];
+    let mut vecit = vecc.iter();
+    //assert_eq!(vecit.next(),Some(&2));
+    println!("netxt:{}",vecit.next().unwrap());
+    for i in vecit{
+        println!("it:{}",i);
+    }
+    println!("##################################");
+}
+
