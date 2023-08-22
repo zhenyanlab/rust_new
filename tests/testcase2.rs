@@ -50,8 +50,10 @@ fn appstoreTest(){
         None => "Not a valid mobile OS"
     });
     assert_eq!(tool::find_store("IOS"),Some("app store"));
-
-    assert_eq!(tool::find_store("windows"),Some("app store"));
+    if tool::find_store("IOS") == Some("app store"){
+        println!("ios app store is match");
+    }
+    assert_ne!(tool::find_store("windows"),Some("app store"));
 }
 
 
