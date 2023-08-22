@@ -51,7 +51,7 @@ fn appstoreTest(){
     });
     assert_eq!(tool::find_store("IOS"),Some("app store"));
 
-    assert_eq!(tool::find_store("windows"),Some("app store"));
+    assert_eq!(tool::find_store("windows"),None);
 }
 
 
