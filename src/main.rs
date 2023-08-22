@@ -1,6 +1,7 @@
 mod comm;
 //mod lib;
 mod  util;
+mod tool;
 use comm as cc;
 
 fn  main() {
@@ -22,9 +23,9 @@ fn  main() {
     let aa = cc::dangle();
     println!("{}",aa);
     //let  aaa: &String = dangle2(&aa);
-    let s1 = String::from("abcdefghijklmnopqrstuvwxyz");
-    let s2 =&s1[0..5];
-    let s3 =&s1[5..10];
+    let s1: String = String::from("abcdefghijklmnopqrstuvwxyz");
+    let s2: &str =&s1[0..5];
+    let s3: &str =&s1[5..10];
     println!("{}={}={}",s1,s2,s3);
     let x1: cc::changfangxing = cc::changfangxing{chang:6,kuan:5};
     let x2: cc::changfangxing = cc::changfangxing{chang:5,kuan:4};
@@ -34,7 +35,7 @@ fn  main() {
     let z3 :&str = "init";
     {
         let z2 = String::from("test1");
-        let z3 = cc::langstr(z1.as_str(), z2.as_str());
+        let z3: &str = cc::langstr(z1.as_str(), z2.as_str());
         let z4 = cc::dangle2(&z1);
         println!("z4:{}",z4);
         // println!("z3:{}",z3);
@@ -44,4 +45,6 @@ fn  main() {
 
 
     comm::cu1();
+
+    println!("{}",tool::ttt::plus());
 }
