@@ -12,6 +12,6 @@ fn main() {
         }
     });
     let mut buf = String::new();
-    f.read_to_string(&mut  buf);
+    // f.read_to_string(&mut  buf);
     println!("{}",buf)
 }
