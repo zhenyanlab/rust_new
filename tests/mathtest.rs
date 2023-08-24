@@ -18,7 +18,7 @@ fn test_retrun( x: &Coin) -> i32{
             println!("No1");
             1;//注意，这里没有分号，有分号是语句会报错，类型不匹配，没有分号则是表达式
             1
-        }
+            }
         Coin::No2 => 2,
         Coin::No3 => 3,
         Coin::No4 => 4,

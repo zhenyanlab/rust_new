@@ -10,11 +10,20 @@ mod  util{
 }
 
 mod tool { // 使用 include!
-    include!("../src/tool/ttt.rs");
+    include!("../src/tool/ttt.rs");  
 }
+mod tool2 { // 使用 include!
+    include!("../src/tool/httpclient.rs");
+}
+
 
 use comm as cc;
 
+#[test]
+fn httpclinetTest(){
+   tool2::httpClient();
+
+}
 
 // extern  crate rust_new;
 //use rust_new;
