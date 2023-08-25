@@ -10,11 +10,37 @@ mod  util{
 }
 
 mod tool { // 使用 include!
-    include!("../src/tool/ttt.rs");
+    include!("../src/tool/ttt.rs");  
 }
+mod tool2 { // 使用 include!
+    include!("../src/tool/httpclient.rs");
+}
+use mini_redis::{client, Result};
 
 use comm as cc;
 
+
+// #[test]
+pub async  fn testReidsAsync() -> Result<()>{
+      // Open a connection to the mini-redis address.
+      let mut client = client::connect("127.0.0.1:6379").await?;
+
+      // Set the key "hello" with value "world"
+      client.set("hello", "world".into()).await?;
+  
+      // Get key "hello"
+      let result = client.get("hello").await?;
+  
+      println!("got value from the server; result={:?}", result);
+  
+      Ok(())
+}
+
+#[test]
+fn httpclinetTest(){
+   tool2::httpClient();
+
+}
 
 // extern  crate rust_new;
 //use rust_new;
