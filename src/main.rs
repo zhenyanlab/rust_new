@@ -4,7 +4,19 @@ mod  util;
 mod tool;
 use comm as cc;
 
-fn  main() {
+use std::fs::File;
+use std::io::{ErrorKind, Read};
+use std::thread;
+use std::time::Duration;
+use std::io::prelude::*;
+use std::net::TcpListener;
+use std::net::TcpStream;
+
+
+
+
+
+fn  main8() {
     let a = "a";
     let mut b = String::new();
     b.push_str("b");
@@ -47,18 +59,6 @@ fn  main() {
     comm::cu1();
 
     println!("{}",tool::ttt::plus());
-}
-
-use std::fs::File;
-use std::io::{ErrorKind, Read};
-use std::thread;
-use std::time::Duration;
-use std::io::prelude::*;
-use std::net::TcpListener;
-use std::net::TcpStream;
-
-mod tool { // 使用 include!
-    include!("../src/tool/httpclient.rs");  
 }
 
 fn main2() {
@@ -104,7 +104,7 @@ async fn main() {
 
 async fn main4()   {
 
-    let b = tool::httpClient();
+    let b = tool::httpclient::httpClient();
     //println!("{}",b);
     // let mut rt = tokio::runtime::Runtime::new().unwrap();
     // rt.block_on(async {
