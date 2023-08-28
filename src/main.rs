@@ -89,7 +89,7 @@ async fn main() {
 
     let body = res.text().await.unwrap();
 
-    // println!("{}", body);
+    println!("111:{}", body);
 
     let res = reqwest::Client::new().get("https://www.baidu.com").send().await.unwrap();
     println!("222Status: {}", res.status());
