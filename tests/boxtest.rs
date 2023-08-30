@@ -26,8 +26,8 @@ fn linktest(){
     let mut root = Node{val:0,next:None};
     let mut one = Node{val:1,next:None};
     let two = Node{val:2,next:None};
-    root.next = Some(Box::new(one));
     one.next = Some(Box::new(two));
+    root.next = Some(Box::new(one));
 
     foreachLink(&root);
 
