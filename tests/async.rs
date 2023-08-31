@@ -109,4 +109,15 @@ fn my_test_map(){
     let kkk=10;
     assert_eq!(None.unwrap_or_else(|| 2 * kkk), 20);
 
+    let x = Some(String::from("foo"));
+    let y = x.ok_or(0);
+    print_type_of("yyy:",&y);
+    assert_eq!(y, Ok(String::from("foo")));
+
+    let x: Option<&str> = None;
+    print_type_of("xxx:",&x);
+    assert_eq!(x.ok_or(0), Err(0));
+
+
+
 }
