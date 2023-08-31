@@ -114,6 +114,7 @@ fn my_test_map(){
     print_type_of("yyy:",&y);
     assert_eq!(y, Ok(String::from("foo")));
 
+
     let x: Option<&str> = None;
     print_type_of("xxx:",&x);
     assert_eq!(x.ok_or(0), Err(0));
