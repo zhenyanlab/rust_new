@@ -15,23 +15,6 @@ use std::time::Duration;
 use std::thread;
 use threadpool::ThreadPool;
 
-
-fn main2() {
-    println!("main-test-start");
-    let pool = ThreadPool::new(4);
-
-    for i in 1..100 {
-
-        let t =  pool.execute(move || {
-            let str ="thread-print".to_string()+&i.to_string();
-            println!("{}",&str);
-        });
-
-    }
-    pool.join();
-    println!("main-test-end");
-}
-
 fn main() {
     let pool = ThreadPool::new(4);
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
