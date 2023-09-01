@@ -118,7 +118,19 @@ fn my_test_map(){
     let x: Option<&str> = None;
     print_type_of("xxx:",&x);
     assert_eq!(x.ok_or(0), Err(0));
+}
 
+#[test]
+fn my_test_ok_or(){
+    let x = Some("foo");
+    let b = x.ok_or_else(||{0});
+    print_type_of("my_test_ok_or",&b);
+    assert_eq!(b,Ok("foo"));
+
+    let x:Option<&str> = None;
+    let b = x.ok_or_else(||{123});
+    print_type_of("my_test_ok_or",&b);
+    assert_eq!(b,Err(123));
 
 
 }
