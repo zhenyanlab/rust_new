@@ -1,6 +1,12 @@
 use std::error::Error;
 use std::thread::sleep;
 use std::time::Duration;
+use tokio_stream::{self as stream, StreamExt};
+
+use tokio::net::TcpStream;
+use tokio::io::{self, AsyncReadExt, AsyncWriteExt};
+
+
 
 #[tokio::test]
 async fn tokio_main_test() {
@@ -50,9 +56,8 @@ async fn say_hello() ->Option<i32>{
 }
 // use async_recursion::async_recursion;
 
-fn print_type_of<T>(_: &T) ->String{
+fn print_type_of<T>(_: &T){
     println!("{}", std::any::type_name::<T>());
-    "".to_string()
 }
 #[tokio::test]
 async fn tokio_say_hello_test() ->Result<(),Box<dyn Error>> {
@@ -65,4 +70,50 @@ async fn tokio_say_hello_test() ->Result<(),Box<dyn Error>> {
     // Ok("".to_string())
     Ok(())
 }
+use tokio::fs::File;
+use tokio::io::{AsyncBufReadExt, BufReader};
+#[tokio::test]
+async fn tokio_file_test_async() {
 
+    let file = File::open("hello.html").await;
+    if file.is_err(){
+        println!("file is not ex222");
+    }else{
+
+    }
+    let file=file.unwrap();
+    let mut reader = BufReader::new(file).lines();
+    while let Some(line) = reader.next_line().await.unwrap() {
+        println!("{}", line);
+    }
+}
+
+
+
+
+#[tokio::test]
+async fn tokio_test_stream_ex() {
+    let vec = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let mut stream = stream::iter(vec).map(|x| x * 2);
+
+    while let Some(num) = stream.next().await {
+        println!("{}", num);
+    }
+}
+
+
+#[tokio::test]
+async fn tokio_telnet_stream_ex() ->io::Result<()> {
+    let mut stream = TcpStream::connect("127.0.0.1:6379").await?;
+    let mut buffer = [0; 1024];
+    stream.write_all(b"set a b\r\n").await?;
+    let n = stream.read(&mut buffer).await?;
+    let s = String::from_utf8_lossy(&buffer);
+    println!("@@@The bytes read: {}", s);
+    let p = tokio::time::timeout(std::time::Duration::from_secs(5),stream.write_all(b"info\r\n")).await?;
+    print_type_of(&p);
+     let n = stream.read(&mut buffer).await?;
+    let s = String::from_utf8_lossy(&buffer);
+    println!("@@@The bytes read: {}", s);
+    Ok(())
+}

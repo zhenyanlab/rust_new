@@ -1319,6 +1319,7 @@ dependencies = [
  "reqwest",
  "threadpool",
  "tokio",
+ "tokio-stream",
 ]
 
 [[package]]
