@@ -105,15 +105,38 @@ async fn tokio_test_stream_ex() {
 #[tokio::test]
 async fn tokio_telnet_stream_ex() ->io::Result<()> {
     let mut stream = TcpStream::connect("127.0.0.1:6379").await?;
-    let mut buffer = [0; 1024];
-    stream.write_all(b"set a b\r\n").await?;
+    let mut buffer = [0; 4096];
+    stream.write_all(b"set a ###b\r\n").await?;
     let n = stream.read(&mut buffer).await?;
     let s = String::from_utf8_lossy(&buffer);
     println!("@@@The bytes read: {}", s);
-    let p = tokio::time::timeout(std::time::Duration::from_secs(5),stream.write_all(b"info\r\n")).await?;
+    let p = tokio::time::timeout(std::time::Duration::from_millis(1),stream.write_all(b"info\r\n")).await?;
     print_type_of(&p);
-     let n = stream.read(&mut buffer).await?;
-    let s = String::from_utf8_lossy(&buffer);
-    println!("@@@The bytes read: {}", s);
+    let p = tokio::time::timeout(std::time::Duration::from_micros(1),stream.read(&mut buffer)).await?;
+    print_type_of(&p);
+    let s = String::from_utf8_lossy(&buffer[..200]);
+    println!("@@@len:{},{},The bytes read: {}",p.unwrap(),s.len(), s);
     Ok(())
 }
+
+use tokio::runtime::Builder;
+#[tokio::test]
+async fn tokio_thread_pool_async_test(){
+
+    //构造单线程tokio运行环境
+    let runtime = Builder::new_multi_thread().
+        max_blocking_threads(1).
+        enable_all().
+        build().
+        expect("create tokio runtime failed");
+    runtime.spawn(async {//相当于tokio::task::spawn
+        //处于单线程中
+        println!("hi1");
+    });
+    runtime.spawn(async {//相当于tokio::task::spawn
+        println!("hi2");//处于单线程中
+    });
+    println!("hello");
+}
+
+
