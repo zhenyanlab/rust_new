@@ -37,5 +37,7 @@ async fn serde_test() {
 
     // Prints deserialized = Point { x: 1, y: 2 }
     println!("obj = {:?}", p2);
+    let v= vec![1,2,3];
+    println!("{:?}",v);
 
 }
