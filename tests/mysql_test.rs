@@ -23,6 +23,8 @@ impl P {
             address : String::from("")
         }
     }
+
+
 }
 
 #[test]
@@ -67,5 +69,27 @@ fn mysql_Test_conn(){
 }
 
 
+#[test]
+fn mysql_Test_select_conn(){
+    println!("mysql_Test_select_conn_start");
 
-     //match query_result {            Ok(result) => {                result            }            Err(_) => {                None            }        }
+    println!("mysql_Test_select_conn_end");
+}
+use threadpool::ThreadPool;
+
+#[test]
+fn thread_test(){
+    println!("main-test-start");
+    let pool = ThreadPool::new(4);
+
+    for i in 1..100 {
+
+        let t =  pool.execute(move || {
+            let str ="thread-print".to_string()+&i.to_string();
+            println!("{}",&str);
+        });
+
+    }
+    pool.join();
+    println!("main-test-end");
+}

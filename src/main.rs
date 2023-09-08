@@ -1,59 +1,26 @@
-mod comm;
-//mod lib;
-mod tool;
-mod util;
-use comm as cc;
-use std::fs;
-use std::fs::File;
-use std::io::prelude::*;
-use std::io::{ErrorKind, Read};
-use std::net::TcpListener;
-use std::net::TcpStream;
-
-use std::time::Duration;
-
-use std::thread;
-use threadpool::ThreadPool;
-
-
-fn main2() {
-    println!("main-test-start");
-    let pool = ThreadPool::new(4);
-
-    for i in 1..100 {
-
-        let t =  pool.execute(move || {
-            let str ="thread-print".to_string()+&i.to_string();
-            println!("{}",&str);
-        });
-
-    }
-    pool.join();
-    println!("main-test-end");
+use actix_web::{get, web, App, HttpServer, Responder};
+use mysql as my;
+use mysql::prelude::Queryable;
+use serde::Deserialize;
+use serde::Serialize;
+#[get("/")]
+async fn index() -> impl Responder {
+    "Hello, World!"
 }
 
-fn main() {
-    let pool = ThreadPool::new(4);
-    let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-    for stream in listener.incoming() {
-        let stream = stream.unwrap();
-        let t =   pool.execute(|| {
-            handle_connection(stream);
-        });
-    }
-
+#[get("/{name}")]
+async fn hello(name: web::Path<String>) -> impl Responder {
+    format!("Hello {}!", &name)
 }
-fn handle_connection(mut stream: TcpStream) {
-    let mut buffer = [0; 1024];
-    stream.read(&mut buffer).unwrap();
-    let contents = fs::read_to_string("hello.html").unwrap();
 
-    let response = format!(
-        "HTTP/1.1 200 OK\r\nContent-Length: {}\r\n\r\n{}",
-        contents.len(),
-        contents
-    );
-    stream.write(response.as_bytes()).unwrap();
-    stream.flush().unwrap();
-    println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let pool = my::Pool::new("mysql://mysqlroot:12345678@localhost:3306").unwrap();
+    HttpServer::new(|| App::new().service(index).service(hello))
+        .app_data(Data(pool))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
 }
+
+
