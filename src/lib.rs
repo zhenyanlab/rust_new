@@ -1,14 +1,13 @@
-
-pub fn  wowo2(x:u32,y:u32) -> u32 {
-   return x+y;
+pub fn wowo2(x: u32, y: u32) -> u32 {
+    return x + y;
 }
-pub mod com{
-fn  wohaha(x:u32,y:u32) -> u32{
-    return x+y;
-}
-pub fn  wowo(x:u32,y:u32) -> u32{
-   return x+y;
-}
+pub mod com {
+    fn wohaha(x: u32, y: u32) -> u32 {
+        return x + y;
+    }
+    pub fn wowo(x: u32, y: u32) -> u32 {
+        return x + y;
+    }
 }
 
 #[cfg(test)]
@@ -22,9 +21,6 @@ mod tests {
         // assert_eq!(4, com::wohaha(2, 2));
     }
 }
-
-
-
 
 // Caused by:
 //   no targets specified in the manifest

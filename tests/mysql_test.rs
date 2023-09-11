@@ -5,72 +5,71 @@ use serde::Serialize;
 use serde_json::json;
 
 #[warn(dead_code)]
-#[derive(Debug)]
-#[derive(Serialize, Deserialize)]
-struct  P {
-    id : i32,
-    name : String,
-    age : i32,
-    address : String,
+#[derive(Debug, Serialize, Deserialize)]
+struct P {
+    id: i32,
+    name: String,
+    age: i32,
+    address: String,
 }
 
 impl P {
     pub fn new() -> P {
         P {
-            id:0,
-            name:String::from(""),
-            age:0,
-            address : String::from("")
+            id: 0,
+            name: String::from(""),
+            age: 0,
+            address: String::from(""),
         }
     }
-
-
 }
 
 #[test]
-fn mysql_Test_conn(){
+fn mysql_Test_conn() {
     println!("mysql_Test_conn_start");
     let pool = my::Pool::new("mysql://mysqlroot:12345678@localhost:3306").unwrap();
     let mut conn = pool.get_conn().unwrap();
-    let mut p =P::new();
-    let selected_rows = conn.exec_first("SELECT * FROM test.t_user", ()).map(|row:Option<(i32, String, i32, String)>| {
-        // println!("dbrow:{:?}",result);
-       let mut pp =  row.map(|(id,name,age,address)| P {
-            id:id,
-            name:name,
-            age:age,
-            address:address
-        });
-        let ppp = pp.unwrap();
-        println!("closefn:{:?}",&ppp);
-        p.id=ppp.id;
-        p.name=ppp.name;
-        p.age=ppp.age;
-        p.address=ppp.address;
-        // p.id=id;
-        // p.name=name;
-        // p.age=age;
-        // p.address=address;
+    let mut p = P::new();
+    let selected_rows = conn
+        .exec_first("SELECT * FROM test.t_user", ())
+        .map(|row: Option<(i32, String, i32, String)>| {
+            // println!("dbrow:{:?}",result);
+            let mut pp = row.map(|(id, name, age, address)| P {
+                id: id,
+                name: name,
+                age: age,
+                address: address,
+            });
+            let ppp = pp.unwrap();
+            println!("closefn:{:?}", &ppp);
+            p.id = ppp.id;
+            p.name = ppp.name;
+            p.age = ppp.age;
+            p.address = ppp.address;
+            // p.id=id;
+            // p.name=name;
+            // p.age=age;
+            // p.address=address;
+        })
+        .unwrap();
+    println!("outFun:{:?}", p);
+    println!("outFun-json-str:{}", serde_json::to_string(&p).unwrap());
+    let selected_rows: Option<(i32, String, i32, String)> =
+        conn.exec_first("SELECT * FROM test.t_user", ()).unwrap();
+    println!("{:?}", selected_rows);
 
-    }).unwrap();
-    println!("outFun:{:?}",p);
-    println!("outFun-json-str:{}",serde_json::to_string(&p).unwrap());
-    let selected_rows :Option<(i32, String, i32, String)> = conn.exec_first("SELECT * FROM test.t_user", ()).unwrap();
-    println!("{:?}",selected_rows);
-
-
-
-    let resu:Vec<(i32, String, i32, String)>= conn.exec("select * from test.t_user_1",()).unwrap_or_else(|_|{vec!{(0,"".to_string(),0,"".to_string())}});
-    for v in &resu{
-        println!("vec-for-earch{:?}",v);
+    let resu: Vec<(i32, String, i32, String)> = conn
+        .exec("select * from test.t_user_1", ())
+        .unwrap_or_else(|_| vec![(0, "".to_string(), 0, "".to_string())]);
+    for v in &resu {
+        println!("vec-for-earch{:?}", v);
     }
-    println!("{:?}",resu);
+    println!("{:?}", resu);
     println!("mysql_Test_conn_end");
 }
 
-
 #[test]
-fn mysql_Test_select_conn(){
+fn mysql_Test_select_conn() {
     println!("mysql_Test_select_conn_start");
 
     println!("mysql_Test_select_conn_end");
@@ -78,17 +77,15 @@ fn mysql_Test_select_conn(){
 use threadpool::ThreadPool;
 
 #[test]
-fn thread_test(){
+fn thread_test() {
     println!("main-test-start");
     let pool = ThreadPool::new(4);
 
     for i in 1..100 {
-
-        let t =  pool.execute(move || {
-            let str ="thread-print".to_string()+&i.to_string();
-            println!("{}",&str);
+        let t = pool.execute(move || {
+            let str = "thread-print".to_string() + &i.to_string();
+            println!("{}", &str);
         });
-
     }
     pool.join();
     println!("main-test-end");
