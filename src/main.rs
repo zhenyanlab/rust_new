@@ -32,7 +32,9 @@ impl P {
         }
     }
 }
-
+fn print_type_of<T>(log: &str, _: &T) {
+    println!("##{}##:{}", log, std::any::type_name::<T>())
+}
 #[get("/{name}")]
 async fn hello(
     pool: web::Data<mysql::Pool>,
@@ -44,16 +46,33 @@ async fn hello(
         .exec("select * from test.t_user", ())
         .unwrap_or_else(|_| vec![(0, "".to_string(), 0, "".to_string())]);
     let mut resuo: Vec<P> = vec![];
-    let _ = resu.iter().map(|(id, name, age, adress)| {
+    let resuo2: Vec<P> = resu
+        .iter()
+        .map(|(id, name, age, adress)| {
+            let pp = P {
+                id: *id,
+                name: name.to_string(),
+                age: *age,
+                address: adress.to_string(),
+            };
+            println!("{:?}", pp);
+            //resuo.push(pp);
+            pp
+        })
+        .collect();
+    print_type_of("resuo2", &resuo2);
+    let mapuserJson = serde_json::to_string(&resuo2).unwrap();
+    println!("mapuserJson{:?}", resuo2);
+    for (id, name, age, adress) in resu {
         let pp = P {
-            id: *id,
+            id: id,
             name: name.to_string(),
-            age: *age,
+            age: age,
             address: adress.to_string(),
         };
-        println!("{:?}", pp);
+        println!("for-earch:{:?}", pp);
         resuo.push(pp);
-    });
+    }
     let userJson = serde_json::to_string(&resuo).unwrap();
     println!("{}", &userJson);
     println!("{:?}", &resuo);
@@ -62,8 +81,8 @@ async fn hello(
     let redis_value: String = redis::cmd("GET").arg("my_key").query(&mut con).unwrap();
 
     format!(
-        "Hello{}:you info: {}!redisvalue:{}",
-        &userJson, &name, &redis_value
+        "Hello{}  <br>  :you info: {} <br> !redisvalue:{} <br> &resuo2{}",
+        &userJson, &name, &redis_value, &mapuserJson
     )
 }
 
