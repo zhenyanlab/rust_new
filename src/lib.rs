@@ -30,3 +30,5 @@ pub mod action;
 pub mod conf;
 pub mod dao;
 pub mod entity;
+
+pub mod tool;

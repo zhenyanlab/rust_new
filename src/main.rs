@@ -3,6 +3,8 @@ pub mod conf;
 pub mod dao;
 pub mod entity;
 
+pub mod tool;
+
 use actix_web::{error, get, middleware, web, App, HttpResponse, HttpServer, Responder};
 use chrono::prelude::*;
 use mysql::prelude::Queryable;
@@ -32,7 +34,7 @@ fn app_init() -> (mysql::Pool, redis::Client) {
 
     println!("Current datetime: {}", now);
     let _: () = redis::cmd("SET")
-        .arg("start_time")
+        .arg(tool::consts::USER_REDIS_KEY)
         .arg(now)
         .query(&mut con)
         .unwrap();

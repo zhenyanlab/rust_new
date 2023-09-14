@@ -1,5 +1,6 @@
 use crate::dao::user::get_all_user;
 use crate::entity::user::P;
+use crate::tool::consts::*;
 use actix_web::{error, get, middleware, web, App, HttpResponse, HttpServer, Responder};
 
 fn print_type_of<T>(log: &str, _: &T) {
@@ -46,7 +47,7 @@ pub async fn hello(
     println!("{:?}", &resuo);
 
     let mut con = redis_client.get_connection().unwrap();
-    let redis_value: String = redis::cmd("GET").arg("my_key").query(&mut con).unwrap();
+    let redis_value: String = redis::cmd("GET").arg(USER_REDIS_KEY).query(&mut con).unwrap();
 
     format!(
         "Hello{}  <br>  :you info: {} <br> !redisvalue:{} <br> &resuo2{}",
