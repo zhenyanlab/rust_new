@@ -14,6 +14,8 @@ pub async fn hello(
     name: web::Path<String>,
 ) -> impl Responder {
     let resu = get_all_user(pool);
+    let resu = resu.await.unwrap();
+    println!("len:{}",resu.len());
     let mut resuo: Vec<P> = vec![];
     // let resuo2: Vec<P> = resu
     //     .iter()
@@ -42,7 +44,7 @@ pub async fn hello(
     //     println!("for-earch:{:?}", pp);
     //     resuo.push(pp);
     // }
-    let userJson = serde_json::to_string(&resuo).unwrap();
+    let userJson = serde_json::to_string(&resu).unwrap();
     println!("{}", &userJson);
     println!("{:?}", &resuo);
 
