@@ -14,6 +14,9 @@ use serde::Serialize;
 use redis::Client;
 use redis::RedisResult;
 use redis::ToRedisArgs;
+
+
+use env_logger;
 use log::info;
 
 
@@ -45,6 +48,20 @@ fn app_init() -> (mysql_async::Pool, redis::Client) {
 }
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
+
+    // dotenv().ok();
+    if std::env::var("RUST_LOG").is_err() {
+       std::env::set_var("RUST_LOG", "actix_web=info");
+    }
+    env_logger::init();
+    info!(
+         "Starting server at http://",
+         // cfg.server.host, cfg.server.port
+     );
+
+
+
     let (pool, client) = app_init();
     //init_logger();
 
