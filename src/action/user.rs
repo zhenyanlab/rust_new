@@ -16,41 +16,21 @@ pub async fn hello(
     let resu = get_all_user(pool);
     let resu = resu.await.unwrap();
     println!("len:{}",resu.len());
-    let mut resuo: Vec<P> = vec![];
-    // let resuo2: Vec<P> = resu
-    //     .iter()
-    //     .map(|(id, name, age, adress)| {
-    //         let pp = P {
-    //             id: *id,
-    //             name: name.to_string(),
-    //             age: *age,
-    //             address: adress.to_string(),
-    //         };
-    //         println!("{:?}", pp);
-    //         //resuo.push(pp);
-    //         pp
-    //     })
-    //     .collect();
-    // print_type_of("resuo2", &resuo2);
-    // let mapuserJson = serde_json::to_string(&resuo2).unwrap();
-    // println!("mapuserJson{:?}", resuo2);
-    // for p in resu {
-    //     let pp = P {
-    //         id: id,
-    //         name: name.to_string(),
-    //         age: age,
-    //         address: adress.to_string(),
-    //     };
-    //     println!("for-earch:{:?}", pp);
-    //     resuo.push(pp);
-    // }
     let userJson = serde_json::to_string(&resu).unwrap();
     println!("{}", &userJson);
+
+    let resuo : Vec<_>  = resu.iter().map(|p|P{
+        id:p.id+p.id,
+        name:p.name.to_string() + p.name.as_str(),
+        age:p.age+p.age,
+        address:p.address.to_string() +p.name.as_str(),
+    }).collect();
     println!("{:?}", &resuo);
+    let mapuserJson = serde_json::to_string(&resuo).unwrap();
 
     let mut con = redis_client.get_connection().unwrap();
     let redis_value: String = redis::cmd("GET").arg(USER_REDIS_KEY).query(&mut con).unwrap();
-    let mapuserJson = "asdf";
+
     format!(
         "Hello{}  <br>  :you info: {} <br> !redisvalue:{} <br> &resuo2{}",
         &userJson, &name, &redis_value, &mapuserJson
