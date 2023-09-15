@@ -7,16 +7,19 @@ pub mod tool;
 
 use actix_web::{error, get, middleware, web, App, HttpResponse, HttpServer, Responder};
 use chrono::prelude::*;
-use mysql::prelude::Queryable;
+use mysql_async::prelude::*;
 use serde::Deserialize;
 use serde::Serialize;
 
 use redis::Client;
 use redis::RedisResult;
 use redis::ToRedisArgs;
+use log::info;
+
+
 
 #[get("/test")]
-async fn index() -> impl Responder {
+async fn test() -> impl Responder {
     "Hello, World!"
 }
 
@@ -24,8 +27,8 @@ fn print_type_of<T>(log: &str, _: &T) {
     println!("##{}##:{}", log, std::any::type_name::<T>())
 }
 
-fn app_init() -> (mysql::Pool, redis::Client) {
-    let pool = mysql::Pool::new("mysql://mysqlroot:12345678@localhost:3306").unwrap();
+fn app_init() -> (mysql_async::Pool, redis::Client) {
+    let pool = mysql_async::Pool::new("mysql://mysqlroot:12345678@localhost:3306");
     let client = redis::Client::open("redis://127.0.0.1/").unwrap();
     let mut con = client.get_connection().unwrap();
     let fmt = "%Y年%m月%d日 %H:%M:%S";
@@ -43,6 +46,7 @@ fn app_init() -> (mysql::Pool, redis::Client) {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let (pool, client) = app_init();
+    //init_logger();
 
     // throw away the result, just make sure it does not fail
     HttpServer::new(move || {
@@ -50,10 +54,14 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(pool.clone()))
             .app_data(web::Data::new(client.clone()))
             .wrap(middleware::Logger::default())
-            .service(index)
+            .service(test)
             .configure(conf::conf::config) // <- register resources
     })
     .bind(("127.0.0.1", 9999))?
     .run()
     .await
 }
+
+
+
+

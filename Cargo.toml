@@ -15,5 +15,7 @@ redis = "0.23.3"
 threadpool = "1.0"
 serde = { version = "1.0.188", features = ["derive"] }
 serde_yaml = "0.9.25"
-mysql = "*"
+mysql_async = "0.32.2"
 chrono = "0.4.30"
+log = "0.4.20"
+env_logger = "0.10.0"
