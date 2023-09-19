@@ -15,15 +15,15 @@ pub async fn hello(
 ) -> impl Responder {
     let resu = get_all_user(pool);
     let resu = resu.await.unwrap();
-    println!("len:{}",resu.len());
+    println!("len:{}", resu.len());
     let userJson = serde_json::to_string(&resu).unwrap();
     println!("{}", &userJson);
 
-    let resuo : Vec<_>  = resu.iter().map(|p|P{
-        id:p.id+p.id,
-        name:p.name.to_string() + p.name.as_str(),
-        age:p.age+p.age,
-        address:p.address.to_string() +p.name.as_str(),
+    let resuo: Vec<_> = resu.iter().map(|p| P {
+        id: p.id + p.id,
+        name: p.name.to_string() + p.name.as_str(),
+        age: p.age + p.age,
+        address: p.address.to_string() + p.name.as_str(),
     }).collect();
     println!("{:?}", &resuo);
     let mapuserJson = serde_json::to_string(&resuo).unwrap();

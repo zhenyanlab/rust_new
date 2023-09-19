@@ -11,13 +11,16 @@ fn boxTest() {
     let b = fn1(3);
     println!("boxTest:{}", b);
 }
+
 struct Node {
     val: u8,
     next: Option<Box<Node>>,
 }
+
 impl Node {
     fn push(&mut self, node: Node) {}
 }
+
 fn linktest() {
     let mut root = Node { val: 0, next: None };
     let mut one = Node { val: 1, next: None };
@@ -27,6 +30,7 @@ fn linktest() {
 
     foreachLink(&root);
 }
+
 fn foreachLink(root: &Node) {
     let mut iRoot = root;
     println!("{}", iRoot.val);

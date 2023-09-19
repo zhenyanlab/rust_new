@@ -1,10 +1,12 @@
 pub fn wowo2(x: u32, y: u32) -> u32 {
     return x + y;
 }
+
 pub mod com {
     fn wohaha(x: u32, y: u32) -> u32 {
         return x + y;
     }
+
     pub fn wowo(x: u32, y: u32) -> u32 {
         return x + y;
     }

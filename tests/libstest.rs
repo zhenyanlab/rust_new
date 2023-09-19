@@ -14,10 +14,12 @@ mod tool {
     // 使用 include!
     include!("../src/tool/ttt.rs");
 }
+
 mod tool2 {
     // 使用 include!
     include!("../src/tool/httpclient.rs");
 }
+
 use mini_redis::{client, Result};
 
 use comm as cc;

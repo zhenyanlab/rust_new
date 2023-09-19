@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde::Serialize;
+
 #[warn(dead_code)]
 #[derive(Debug, Serialize, Deserialize)]
 pub struct P {

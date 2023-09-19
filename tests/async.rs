@@ -3,6 +3,7 @@
 fn print_type_of<T>(log: &str, _: &T) {
     println!("##{}##:{}", log, std::any::type_name::<T>())
 }
+
 #[tokio::test]
 async fn my_test() {
     let res = reqwest::Client::new()
@@ -34,6 +35,7 @@ async fn my_test() {
 }
 
 use mini_redis::{client, Result};
+
 #[tokio::test]
 async fn my_test_redis() -> Result<()> {
     // Open a connection to the mini-redis address.

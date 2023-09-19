@@ -27,6 +27,7 @@ fn print_link(p: P) {
         println!("{}", pp.id);
     }
 }
+
 #[test]
 fn closefn() {
     let a: Option<Box<i32>> = Some(Box::new(5));

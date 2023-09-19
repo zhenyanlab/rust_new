@@ -57,6 +57,7 @@ async fn say_hello() -> Option<i32> {
 fn print_type_of<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
 }
+
 #[tokio::test]
 async fn tokio_say_hello_test() -> Result<(), Box<dyn Error>> {
     let r = say_hello();
@@ -67,15 +68,16 @@ async fn tokio_say_hello_test() -> Result<(), Box<dyn Error>> {
     // Ok("".to_string())
     Ok(())
 }
+
 use tokio::fs::File;
 use tokio::io::{AsyncBufReadExt, BufReader};
+
 #[tokio::test]
 async fn tokio_file_test_async() {
     let file = File::open("hello.html").await;
     if file.is_err() {
         println!("file is not ex222");
-    } else {
-    }
+    } else {}
     let file = file.unwrap();
     let mut reader = BufReader::new(file).lines();
     while let Some(line) = reader.next_line().await.unwrap() {
@@ -105,13 +107,13 @@ async fn tokio_telnet_stream_ex() -> io::Result<()> {
         std::time::Duration::from_millis(1),
         stream.write_all(b"info\r\n"),
     )
-    .await?;
+        .await?;
     print_type_of(&p);
     let p = tokio::time::timeout(
         std::time::Duration::from_micros(1),
         stream.read(&mut buffer),
     )
-    .await?;
+        .await?;
     print_type_of(&p);
     let s = String::from_utf8_lossy(&buffer[..200]);
     println!("@@@len:{},{},The bytes read: {}", p.unwrap(), s.len(), s);
@@ -119,6 +121,7 @@ async fn tokio_telnet_stream_ex() -> io::Result<()> {
 }
 
 use tokio::runtime::Builder;
+
 #[tokio::test]
 async fn tokio_thread_pool_async_test() {
     //构造单线程tokio运行环境

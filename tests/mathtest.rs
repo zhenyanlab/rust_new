@@ -24,6 +24,7 @@ fn test_retrun(x: &Coin) -> i32 {
         Coin::No4 => 4,
     }
 }
+
 #[test]
 fn testMathreturn() {
     let x: Coin = Coin::No1;

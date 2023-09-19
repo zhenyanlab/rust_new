@@ -15,12 +15,13 @@
 
 // #[derive(Debug)]
 use std::any::{self, Any};
-use actix_web::{web, App, HttpRequest,HttpResponse, HttpServer, Responder, post};
+use actix_web::{web, App, HttpRequest, HttpResponse, HttpServer, Responder, post};
 
 // mod  ../lib;
 // use crate::lib::com;
 use rust_new::com;
 use rust_new::wowo2;
+
 mod tests {
     use super::*;
     //error
@@ -30,25 +31,27 @@ mod tests {
     fn internal2() {
         // assert_eq!(4, com::wowo(2, 2));
         dangle();
-        wowo2(2,3);
+        wowo2(2, 3);
         com::wowo(2, 3);
         // assert_eq!(4, com::wowo(2, 2));
         // private function
         // assert_eq!(4, com::wohaha(2, 2));
     }
 }
+
 // use rust_new::u1;
 // use rust_new::util;
 use crate::util;
-pub fn cu1() -> String{
-   return  util::util::u1();
+
+pub fn cu1() -> String {
+    return util::util::u1();
 }
 
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
     let mut s1 = String::from("hello:");
-    s1+= &req_body;
+    s1 += &req_body;
     HttpResponse::Ok().body(s1.to_string())
 }
 
@@ -65,9 +68,9 @@ async fn main2() -> std::io::Result<()> {
             .route("/", web::get().to(greet))
             .route("/a/{name}", web::get().to(greet))
     })
-    .bind("127.0.0.1:8080")?
-    .run()
-    .await
+        .bind("127.0.0.1:8080")?
+        .run()
+        .await
 }
 
 // 需要注意的是用'+'号去拼接字符串，在相加后first_name便丧失了所有权，后续不能再使用first_name变量了。从使用中也可以看到被加的last_name用的是引用，不会丧失所有权，后面还可以正常使用\
@@ -92,12 +95,13 @@ async fn main2() -> std::io::Result<()> {
 // 期参数。这条规则使方法更加易于阅读和编写，因为它省略了一些不
 // 必要的符号。
 
-pub fn dangle()-> String{
+pub fn dangle() -> String {
     let s = String::from("test");
     return s;
 }
-pub  fn dangle2<'a>(b : &'a String) -> &'a String{
-    let s: String= String::from("test");
+
+pub fn dangle2<'a>(b: &'a String) -> &'a String {
+    let s: String = String::from("test");
 
     // 当函数返回一个引用时，返回类型的生命周期参数必须要与其中
     // 一个参数的生命周期参数相匹配。当返回的引用没有 指向任何参数
@@ -118,24 +122,27 @@ pub  fn dangle2<'a>(b : &'a String) -> &'a String{
     // 返回值的生命周期的。一旦它们形成了某种联系，Rust就获得了足够
     // 的信息来支持保障内存安全的操作，并阻止那些可能会导致悬垂指针
     // 或其他违反内存安全的行为
-    return  b;
+    return b;
 }
-pub struct  changfangxing {
-    pub chang:u32,
-    pub kuan:u32
+
+pub struct changfangxing {
+    pub chang: u32,
+    pub kuan: u32,
 }
-impl  changfangxing {
-    pub fn mianji(&self)->u32{
+
+impl changfangxing {
+    pub fn mianji(&self) -> u32 {
         self.chang * self.kuan
     }
-    pub fn da(self,other: &changfangxing) ->bool {
-        self.chang>other.chang && self.kuan > other.kuan
+    pub fn da(self, other: &changfangxing) -> bool {
+        self.chang > other.chang && self.kuan > other.kuan
     }
 }
-pub fn langstr<'a>(x: &'a str,y: &'a  str)->&'a  str {
-    if x.len()>y.len(){
+
+pub fn langstr<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
         x
-    }else{
+    } else {
         y
     }
 }

@@ -46,19 +46,20 @@ fn app_init() -> (mysql_async::Pool, redis::Client) {
         .unwrap();
     return (pool, client);
 }
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
 
 
     // dotenv().ok();
     if std::env::var("RUST_LOG").is_err() {
-       std::env::set_var("RUST_LOG", "actix_web=info");
+        std::env::set_var("RUST_LOG", "actix_web=info");
     }
     // env_logger::init();
 
     init_logger();
 
-     info!(
+    info!(
          "Starting server at http://",
          // cfg.server.host, cfg.server.port
      );
@@ -76,9 +77,9 @@ async fn main() -> std::io::Result<()> {
             .service(test)
             .configure(conf::conf::config) // <- register resources
     })
-    .bind(("127.0.0.1", 9999))?
-    .run()
-    .await
+        .bind(("127.0.0.1", 9999))?
+        .run()
+        .await
 }
 
 

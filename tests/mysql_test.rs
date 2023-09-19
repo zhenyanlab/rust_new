@@ -74,6 +74,7 @@ fn mysql_Test_select_conn() {
 
     println!("mysql_Test_select_conn_end");
 }
+
 use threadpool::ThreadPool;
 
 #[test]
